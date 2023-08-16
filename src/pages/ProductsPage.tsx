@@ -31,16 +31,15 @@ export function ProductsPage() {
   }
   const editHandler = (product: IProduct) => {
     close()
-    addProduct(product)
   }
 
   return (
-    <div className="container mx-auto max-w-2xl pt-5">
+    <div className="container border-2 mx-auto max-w-2xl pt-5">
       { loading && <Loader /> }
       { error && <ErrorMessage error={error} /> }
       { products.map(product => <>
             <Product product={product} key={product.id}/>
-            <div className="inline-grid gap-3 grid-cols-3">
+            <div className="border py-2 px-4 rounded flex items-center mb-2">
               <button className={btnEditBgClassName}
                   onClick={()=>{editProduct(product)}}>
                 { <FontAwesomeIcon icon={faEdit} /> }
