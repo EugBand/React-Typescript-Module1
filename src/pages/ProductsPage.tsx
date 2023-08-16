@@ -13,55 +13,60 @@ import {EditProduct, InitProduct} from "../components/EditProduct";
 import {Button} from "../components/Button";
 
 export function ProductsPage() {
-  const {loading, error, products, addProduct, deleteProduct} = useProducts()
-  const {modalNew, modalEdit, openNew, openEdit, close} = useContext(ModalContext)
+    const {loading, error, products, addProduct, deleteProduct} = useProducts()
+    const {modalNew, modalEdit, openNew, openEdit, close} = useContext(ModalContext)
 
 
-  const btnBasedBgClassName = ' py-2 px-4 border'
-  const btnDeleteBgClassName = 'bg-red-400 ' + btnBasedBgClassName
-  const btnEditBgClassName ='bg-blue-400' + btnBasedBgClassName
+    const btnBasedBgClassName = ' py-2 px-4 border'
+    const btnDeleteBgClassName = 'bg-red-400 ' + btnBasedBgClassName
+    const btnEditBgClassName = 'bg-blue-400' + btnBasedBgClassName
 
 
-  const createHandler = (product: IProduct) => {
-    close()
-    addProduct(product)
-  }
+    const createHandler = (product: IProduct) => {
+        close()
+        addProduct(product)
+    }
 
-  const editProduct = (product : IProduct) => {
-    InitProduct(product)
-    openEdit()
-  }
-  const editHandler = (product: IProduct) => {
-    close()
-  }
+    const editProduct = (product: IProduct) => {
+        InitProduct(product)
+        openEdit()
+    }
+    const editHandler = (product: IProduct) => {
+        close()
+    }
 
-  return (
-    <div className="container border-2 mx-auto max-w-2xl pt-5">
-      { loading && <Loader /> }
-      { error && <ErrorMessage error={error} /> }
-      { products.map(product => <div key={product.id}>
-            <Product product={product} key={product.id}/>
-            <div className="border py-2 px-4 rounded flex items-center mb-2">
-              <Button buttonClass={btnEditBgClassName} children={ <FontAwesomeIcon icon={faEdit} /> }
-              onButtonClick={()=>{editProduct(product)}}></Button>
-              <Button buttonClass={btnDeleteBgClassName} children={ <FontAwesomeIcon icon={faRemove} /> }
-                      onButtonClick={()=>{deleteProduct(product)}}></Button>
-            </div>
-      </div>
-      )}
+    return (
+        <div className="container border-2 mx-auto max-w-2xl pt-5">
+            {loading && <Loader/>}
+            {error && <ErrorMessage error={error}/>}
+            {products.map(product => <div key={product.id}>
+                    <Product product={product} key={product.id}/>
+                    <div className="border py-2 px-4 rounded flex items-center mb-2">
+                        <Button buttonClass={btnEditBgClassName} children={<FontAwesomeIcon icon={faEdit}/>}
+                                onButtonClick={() => {
+                                    editProduct(product)
+                                }}></Button>
+                        <Button buttonClass={btnDeleteBgClassName} children={<FontAwesomeIcon icon={faRemove}/>}
+                                onButtonClick={() => {
+                                    deleteProduct(product)
+                                }}></Button>
+                    </div>
+                </div>
+            )}
 
-      {modalNew && <Modal title="Create new product" onClose={close}>
-        <CreateProduct onCreate={createHandler} />
-      </Modal>}
+            {modalNew && <Modal title="Create new product" onClose={close}>
+                <CreateProduct onCreate={createHandler}/>
+            </Modal>}
 
-      {modalEdit && <Modal title="Edit product" onClose={close}>
-        {<EditProduct onEdit={editHandler}/>}
-      </Modal>}
+            {modalEdit && <Modal title="Edit product" onClose={close}>
+                {<EditProduct onEdit={editHandler}/>}
+            </Modal>}
 
-      <button
-        className="fixed bottom-5 right-5 rounded-full bg-red-700 text-white text-2xl px-4 py-2"
-        onClick={openNew}
-      >+</button>
-    </div>
-  )
+            <button
+                className="fixed bottom-5 right-5 rounded-full bg-red-700 text-white text-2xl px-4 py-2"
+                onClick={openNew}
+            >+
+            </button>
+        </div>
+    )
 }
