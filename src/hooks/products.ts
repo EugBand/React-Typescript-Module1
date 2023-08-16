@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {IProduct} from '../models'
 import axios, {AxiosError} from 'axios'
 

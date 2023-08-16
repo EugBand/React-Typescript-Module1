@@ -10,10 +10,12 @@ import {CreateProduct} from '../components/CreateProduct'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faRemove} from "@fortawesome/free-solid-svg-icons";
 import {EditProduct, InitProduct} from "../components/EditProduct";
+import {Button} from "../components/Button";
 
 export function ProductsPage() {
   const {loading, error, products, addProduct, deleteProduct} = useProducts()
   const {modalNew, modalEdit, openNew, openEdit, close} = useContext(ModalContext)
+
 
   const btnBasedBgClassName = ' py-2 px-4 border'
   const btnDeleteBgClassName = 'bg-red-400 ' + btnBasedBgClassName
@@ -37,20 +39,15 @@ export function ProductsPage() {
     <div className="container border-2 mx-auto max-w-2xl pt-5">
       { loading && <Loader /> }
       { error && <ErrorMessage error={error} /> }
-      { products.map(product => <>
+      { products.map(product => <div key={product.id}>
             <Product product={product} key={product.id}/>
             <div className="border py-2 px-4 rounded flex items-center mb-2">
-              <button className={btnEditBgClassName}
-                  onClick={()=>{editProduct(product)}}>
-                { <FontAwesomeIcon icon={faEdit} /> }
-              </button>
-
-              <button className={btnDeleteBgClassName}
-                  onClick={()=>{deleteProduct(product)}}>
-                { <FontAwesomeIcon icon={faRemove} /> }
-              </button>
+              <Button buttonClass={btnEditBgClassName} children={ <FontAwesomeIcon icon={faEdit} /> }
+              onButtonClick={()=>{editProduct(product)}}></Button>
+              <Button buttonClass={btnDeleteBgClassName} children={ <FontAwesomeIcon icon={faRemove} /> }
+                      onButtonClick={()=>{deleteProduct(product)}}></Button>
             </div>
-      </>
+      </div>
       )}
 
       {modalNew && <Modal title="Create new product" onClose={close}>

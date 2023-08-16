@@ -4,6 +4,7 @@ import axios from 'axios'
 import {ErrorMessage} from './ErrorMessage'
 
 const productData: IProduct =  {
+  id: 111,
   title: '',
   price: 13.5,
   description: 'lorem ipsum set',

@@ -15,16 +15,6 @@ export function EditProduct({onEdit} :EditProductProps) {
   const [product , setProduct] = useState(initialProduct)
   const [error, setError] = useState('')
 
-    // if (title.trim().length === 0 || description.trim().length === 0 || price.valueOf() == null) {
-    //   setError('Please enter valid data.')
-    //   return
-    // }
-
-    const changeHandler = (setFunction: React.Dispatch<React.SetStateAction<string>>, event:
-        React.ChangeEvent<HTMLInputElement>) => {
-      setFunction(event.target.value)
-    }
-
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault()
         setError('')
@@ -55,7 +45,7 @@ export function EditProduct({onEdit} :EditProductProps) {
 
           {error && <ErrorMessage error={error}/>}
 
-          <button type="submit" className="py-2 px-4 border bg-yellow-400 hover:text-white">Edite</button>
+          <button type="submit" className="py-2 px-4 border bg-yellow-400 hover:text-white">Edit</button>
         </form>
     )
 }
