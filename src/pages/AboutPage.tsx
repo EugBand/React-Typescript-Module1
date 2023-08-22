@@ -1,7 +1,5 @@
 import React from 'react'
 
-export function AboutPage() {
-    return (
-        <div>EPAM Typescript|React run. Task #1</div>
-    )
-}
+export const AboutPage = () => (
+    <div>EPAM Typescript|React run. Task #1</div>
+);

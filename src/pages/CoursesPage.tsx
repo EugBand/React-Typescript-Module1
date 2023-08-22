@@ -1,19 +1,19 @@
 import React, {useContext} from 'react'
 import {useProducts} from '../hooks/products'
-import {ModalContext} from '../context/ModalContext'
-import {IProduct} from '../models'
-import {Loader} from '../components/Loader'
-import {ErrorMessage} from '../components/ErrorMessage'
-import {Product} from '../components/Product'
-import {Modal} from '../components/Modal'
-import {CreateProduct} from '../components/CreateProduct'
+import {ModalContext} from '../common/ModalContext'
+import {ICource} from '../models'
+import {Loader} from '../common/Loader'
+import {ErrorMessage} from '../common/ErrorMessage'
+import {CourseInfo} from '../components/CourseInfo/CourseInfo'
+import {Modal} from '../common/Modal'
+import {CreateCource} from '../components/CourseInfo/CreateCource'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faRemove} from "@fortawesome/free-solid-svg-icons";
-import {EditProduct, InitProduct} from "../components/EditProduct";
-import {Button} from "../components/Button";
+import {EditCourse, InitCourse} from "../components/CourseInfo/EditCourse";
+import {Button} from "../common/Button";
 
-export function ProductsPage() {
-    const {loading, error, products, addProduct, deleteProduct} = useProducts()
+export const CoursesPage = () => {
+    const {loading, error, products, addCourse, deleteProduct} = useProducts()
     const {modalNew, modalEdit, openNew, openEdit, close} = useContext(ModalContext)
 
 
@@ -22,16 +22,16 @@ export function ProductsPage() {
     const btnEditBgClassName = 'bg-blue-400' + btnBasedBgClassName
 
 
-    const createHandler = (product: IProduct) => {
+    const createHandler = (product: ICource) => {
         close()
-        addProduct(product)
+        addCourse(product)
     }
 
-    const editProduct = (product: IProduct) => {
-        InitProduct(product)
+    const editCourse = (product: ICource) => {
+        InitCourse(product)
         openEdit()
     }
-    const editHandler = (product: IProduct) => {
+    const editHandler = (product: ICource) => {
         close()
     }
 
@@ -40,11 +40,11 @@ export function ProductsPage() {
             {loading && <Loader/>}
             {error && <ErrorMessage error={error}/>}
             {products.map(product => <div key={product.id}>
-                    <Product product={product} key={product.id}/>
+                    <CourseInfo cource={product} key={product.id}/>
                     <div className="border py-2 px-4 rounded flex items-center mb-2">
                         <Button buttonClass={btnEditBgClassName} children={<FontAwesomeIcon icon={faEdit}/>}
                                 onButtonClick={() => {
-                                    editProduct(product)
+                                    editCourse(product)
                                 }}></Button>
                         <Button buttonClass={btnDeleteBgClassName} children={<FontAwesomeIcon icon={faRemove}/>}
                                 onButtonClick={() => {
@@ -55,18 +55,18 @@ export function ProductsPage() {
             )}
 
             {modalNew && <Modal title="Create new product" onClose={close}>
-                <CreateProduct onCreate={createHandler}/>
+                <CreateCource onCreate={createHandler}/>
             </Modal>}
 
             {modalEdit && <Modal title="Edit product" onClose={close}>
-                {<EditProduct onEdit={editHandler}/>}
+                {<EditCourse onEdit={editHandler}/>}
             </Modal>}
 
-            <button
-                className="fixed bottom-5 right-5 rounded-full bg-red-700 text-white text-2xl px-4 py-2"
-                onClick={openNew}
+            <Button
+                buttonClass = "fixed bottom-5 right-5 rounded-full bg-red-700 text-white text-2xl px-4 py-2"
+                onButtonClick={openNew}
             >+
-            </button>
+            </Button>
         </div>
     )
-}
+};

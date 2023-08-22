@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import {ModalState} from './context/ModalContext'
+import {ModalState} from './common/ModalContext'
 import {BrowserRouter} from 'react-router-dom'
 
 const root = ReactDOM.createRoot(

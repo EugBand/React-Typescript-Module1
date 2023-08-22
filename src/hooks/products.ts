@@ -1,25 +1,25 @@
 import {useEffect, useState} from 'react'
-import {IProduct} from '../models'
 import axios, {AxiosError} from 'axios'
+import {ICource} from "../models";
 
-export function useProducts() {
-    const [products, setProduct] = useState<IProduct[]>([])
+export const useProducts = () => {
+    const [products, setProduct] = useState<ICource[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    function addProduct(product: IProduct) {
+    const addProduct = (product: ICource) => {
         setProduct(prev => [...prev, product])
-    }
+    };
 
-    function deleteProduct(product: IProduct) {
+    const deleteProduct = (product: ICource) => {
         setProduct(prev => prev.filter(item => item.title != product.title))
-    }
+    };
 
-    async function fetchProducts() {
+    const fetchProducts = async () => {
         try {
             setError('')
             setLoading(true)
-            const response = await axios.get<IProduct[]>('https://fakestoreapi.com/products?limit=5')
+            const response = await axios.get<ICource[]>('https://fakestoreapi.com/products?limit=5')
             setProduct(response.data)
             setLoading(false)
         } catch (e: unknown) {
@@ -27,11 +27,11 @@ export function useProducts() {
             setLoading(false)
             setError(error.message)
         }
-    }
+    };
 
     useEffect(() => {
         fetchProducts()
     }, [])
 
-    return {products, error, loading, addProduct, deleteProduct}
-}
+    return {products, error, loading, addCourse: addProduct, deleteProduct}
+};
