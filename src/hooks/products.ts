@@ -1,26 +1,32 @@
 import {useEffect, useState} from 'react'
 import axios, {AxiosError} from 'axios'
-import {ICource} from "../models";
+import {ICourse} from "../models/ICourse";
+import {baseCrudService} from "../service/baseCrudService";
+import {DEFAULT_IMAGE} from "../constants";
 
 export const useProducts = () => {
-    const [products, setProduct] = useState<ICource[]>([])
+    const [products, setCourse] = useState<ICourse[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const {getAllResources} = baseCrudService()
 
-    const addProduct = (product: ICource) => {
-        setProduct(prev => [...prev, product])
+    const addCourse = (product: ICourse) => {
+        setCourse(prev => [...prev, product])
     };
 
-    const deleteProduct = (product: ICource) => {
-        setProduct(prev => prev.filter(item => item.title != product.title))
+    const deleteProduct = (product: ICourse) => {
+        setCourse(prev => prev.filter(item => item.title != product.title))
     };
 
     const fetchProducts = async () => {
         try {
             setError('')
             setLoading(true)
-            const response = await axios.get<ICource[]>('https://fakestoreapi.com/products?limit=5')
-            setProduct(response.data)
+            const response = await getAllResources<ICourse>("/courses/all")
+            if (response && response.data && !response.data.image) {
+                response.data.image = DEFAULT_IMAGE
+            }
+            setCourse(response.data)
             setLoading(false)
         } catch (e: unknown) {
             const error = e as AxiosError
@@ -33,5 +39,5 @@ export const useProducts = () => {
         fetchProducts()
     }, [])
 
-    return {products, error, loading, addCourse: addProduct, deleteProduct}
+    return {courses: products, error, loading, addCourse, deleteProduct}
 };

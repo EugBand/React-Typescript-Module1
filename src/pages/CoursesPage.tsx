@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import {useProducts} from '../hooks/products'
 import {ModalContext} from '../common/ModalContext'
-import {ICource} from '../models'
+import {ICourse} from '../models/ICourse'
 import {Loader} from '../common/Loader'
 import {ErrorMessage} from '../common/ErrorMessage'
 import {CourseInfo} from '../components/CourseInfo/CourseInfo'
@@ -13,7 +13,7 @@ import {EditCourse, InitCourse} from "../components/CourseInfo/EditCourse";
 import {Button} from "../common/Button";
 
 export const CoursesPage = () => {
-    const {loading, error, products, addCourse, deleteProduct} = useProducts()
+    const {loading, error, courses, addCourse, deleteProduct} = useProducts()
     const {modalNew, modalEdit, openNew, openEdit, close} = useContext(ModalContext)
 
 
@@ -22,16 +22,16 @@ export const CoursesPage = () => {
     const btnEditBgClassName = 'bg-blue-400' + btnBasedBgClassName
 
 
-    const createHandler = (product: ICource) => {
+    const createHandler = (course: ICourse) => {
         close()
-        addCourse(product)
+        addCourse(course)
     }
 
-    const editCourse = (product: ICource) => {
-        InitCourse(product)
+    const editCourse = (course: ICourse) => {
+        InitCourse(course)
         openEdit()
     }
-    const editHandler = (product: ICource) => {
+    const editHandler = (course: ICourse) => {
         close()
     }
 
@@ -39,16 +39,16 @@ export const CoursesPage = () => {
         <div className="container border-2 mx-auto max-w-2xl pt-5">
             {loading && <Loader/>}
             {error && <ErrorMessage error={error}/>}
-            {products.map(product => <div key={product.id}>
-                    <CourseInfo cource={product} key={product.id}/>
+            {courses.map(course => <div key={course.id}>
+                    <CourseInfo course={course} key={course.id}/>
                     <div className="border py-2 px-4 rounded flex items-center mb-2">
                         <Button buttonClass={btnEditBgClassName} children={<FontAwesomeIcon icon={faEdit}/>}
                                 onButtonClick={() => {
-                                    editCourse(product)
+                                    editCourse(course)
                                 }}></Button>
                         <Button buttonClass={btnDeleteBgClassName} children={<FontAwesomeIcon icon={faRemove}/>}
                                 onButtonClick={() => {
-                                    deleteProduct(product)
+                                    deleteProduct(course)
                                 }}></Button>
                     </div>
                 </div>

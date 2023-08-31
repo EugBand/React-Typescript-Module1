@@ -1,55 +1,99 @@
 import React, {useState} from 'react'
-import {ICource} from '../../models'
-import axios from 'axios'
+import {ICourse} from '../../models/ICourse'
 import {ErrorMessage} from '../../common/ErrorMessage'
 import {Input} from "../../common/Input";
 import {Form} from "../../common/Form";
 import {Button} from "../../common/Button";
+import {DEFAULT_IMAGE} from "../../constants";
+import {baseCrudService} from "../../service/baseCrudService"
+import {v4 as uuidv4} from 'uuid';
 
-const courseData: ICource = {
-    id: 111,
+const courseData: ICourse = {
+    id: '',
     title: '',
-    price: 13.5,
-    description: 'lorem ipsum set',
-    image: 'https://i.pravatar.cc',
-    category: 'electronic',
+    creationDate: '',
+    duration: 100,
+    authors: [],
+    price: 10,
+    description: '',
+    image: DEFAULT_IMAGE,
+    category: 'IT',
     rating: {
-        rate: 42,
-        count: 10
+        rate: 5,
+        count: 5
     }
 }
 
 interface CreateCourseProps {
-    onCreate: (cource: ICource) => void
+    onCreate: (course: ICourse) => void
 }
 
 export const CreateCource = ({onCreate}: CreateCourseProps) => {
-    const [value, setValue] = useState('')
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [duration, setDuration] = useState('')
+    const [authors, setAuthors] = useState(Array<string>)
     const [error, setError] = useState('')
+    const {createResource} = baseCrudService()
 
     const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault()
         setError('')
 
-        if (value.trim().length === 0) {
+        if (title.trim().length === 0) {
             setError('Please enter valid title.')
             return
         }
 
-        courseData.title = value
-        const response = await axios.post<ICource>('https://fakestoreapi.com/products', courseData)
+        if (description.trim().length === 0) {
+            setError('Please enter valid description.')
+            return
+        }
+
+        if (!Number(duration) && Number(duration) < 1) {
+            setError('Please enter valid duration.')
+            return
+        }
+
+        if (!authors || authors.length === 0) {
+            authors[0] = '0'
+        }
+
+        courseData.id = uuidv4()
+        courseData.title = title
+        courseData.description = description
+        courseData.duration = Number(duration)
+        courseData.creationDate = (new Date()).toDateString()
+        courseData.authors = authors
+
+        const response = await createResource<ICourse>("/courses/add", courseData)
 
         onCreate(response.data)
     }
 
-    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value)
+    const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value)
+    }
+
+    const descriptionChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDescription(event.target.value)
+    }
+
+    const durationChangeHandler = (event: React.ChangeEvent<HTMLInputElement>,
+                                   setter: React.Dispatch<React.SetStateAction<string>>) => {
+        setter(event.target.value)
     }
 
     return (
         <Form onFormSubmit={submitHandler}>
             <Input inputClass={"border py-2 px-4 mb-2 w-full outline-0"} placeholder={"Enter course title..."}
-                   value={value} onInputChange={changeHandler}/>
+                   value={title} onInputChange={titleChangeHandler}/>
+
+            <Input inputClass={"border py-2 px-4 mb-2 w-full outline-0"} placeholder={"Enter course description..."}
+                   value={description} onInputChange={descriptionChangeHandler}/>
+
+            <Input inputClass={"border py-2 px-4 mb-2 w-full outline-0"} placeholder={"Enter course duration..."}
+                   value={duration} onInputChange={(e) => durationChangeHandler(e, setDuration)}/>
 
             {error && <ErrorMessage error={error}/>}
 

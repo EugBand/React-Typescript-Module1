@@ -1,17 +1,17 @@
 import React, {useState} from 'react'
-import {ICource} from '../../models'
+import {ICourse} from '../../models/ICourse'
 import {ErrorMessage} from '../../common/ErrorMessage'
 import {Input} from "../../common/Input";
 import {Form} from "../../common/Form";
 import {Button} from "../../common/Button";
 
-let initialCourse: ICource;
+let initialCourse: ICourse;
 
 interface EditCourseProps {
-    onEdit: (newCourse: ICource) => void
+    onEdit: (newCourse: ICourse) => void
 }
 
-export const InitCourse = (cource: ICource) => {
+export const InitCourse = (cource: ICourse) => {
     initialCourse = cource;
 };
 

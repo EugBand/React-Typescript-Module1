@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
-import {ICource} from '../../models'
+import {ICourse} from '../../models/ICourse'
 import {Button} from "../../common/Button";
 
 
 interface CourseProps {
-    cource: ICource
+    course: ICourse
 }
 
-export const CourseInfo = ({cource}: CourseProps) => {
+export const CourseInfo = ({course}: CourseProps) => {
     const [details, setDetails] = useState(false)
 
     const btnBgClassName = details ? 'bg-yellow-400' : 'bg-blue-400'
@@ -17,14 +17,14 @@ export const CourseInfo = ({cource}: CourseProps) => {
         <div
             className="border py-2 px-4 rounded flex flex-col items-center mb-2"
         >
-            <img src={cource.image} className="w-1/6" alt={cource.title}/>
-            <p>{cource.title}</p>
-            <p className="font-bold">{cource.price}</p>
+            <img src={course.image} className="w-1/6" alt={course.title}/>
+            <p>{course.title}</p>
+            <p className="font-bold">{course.price}</p>
             <Button buttonClass={btnClasses.join(' ')} buttonName={details ? 'Hide Details' : 'Show Details'}
                     onButtonClick={() => setDetails(prev => !prev)}/>
             {details && <div>
-                <p>{cource.description}</p>
-                <p>Rate: <span style={{fontWeight: 'bold'}}>{cource?.rating?.rate}</span></p>
+                <p>{course.description}</p>
+                <p>Rate: <span style={{fontWeight: 'bold'}}>{course?.rating?.rate}</span></p>
             </div>}
         </div>
     )
